@@ -9,7 +9,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'http://0.0.0.0:10000',
+        target: 'https://brainforge-tjls.onrender.com',
         // target: 'http://localhost:8001',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')

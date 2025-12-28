@@ -2,7 +2,7 @@ import axios from 'axios';
 import { authUtils } from '../utils/auth';
 
 // Base API URL
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8001';
+const API_URL = import.meta.env.VITE_API_URL || 'https://brainforge-tjls.onrender.com';
 
 // Create axios instance
 const api = axios.create({
