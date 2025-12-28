@@ -15,11 +15,11 @@ async def root():
         "message": "Welcome to the E-Commerce Platform API Gateway!",
         "documentation": "Visit /docs for API documentation.",
         "services": {
-            "user_service": "http://localhost:8001",
-            "product_service": "http://localhost:8002",
-            "order_service": "http://localhost:8003",
-            "payment_service": "http://localhost:8004",
-            "notification_service": "http://localhost:8005"
+            "user_service": "https://brainforge-tjls.onrender.com",
+            "product_service": "https://brainforge-tjls.onrender.com",
+            "order_service": "https://brainforge-tjls.onrender.com",
+            "payment_service": "https://brainforge-tjls.onrender.com",
+            "notification_service": "https://brainforge-tjls.onrender.com"
         }
     }
     
