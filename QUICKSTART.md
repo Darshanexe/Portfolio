@@ -18,7 +18,7 @@ start-app.bat
 - Everything starts together!
 
 **Result:**
-- Backend API: http://localhost:8001/docs
+- Backend API: https://brainforge-tjls.onrender.com/docs
 - Frontend UI: http://localhost:3000
 
 ---
@@ -100,8 +100,8 @@ Once running:
 | Service | URL | Description |
 |---------|-----|-------------|
 | Frontend | http://localhost:3000 | Main web interface |
-| Backend API | http://localhost:8001/docs | Swagger documentation |
-| Backend Health | http://localhost:8001/health | Health check |
+| Backend API | https://brainforge-tjls.onrender.com/docs | Swagger documentation |
+| Backend Health | https://brainforge-tjls.onrender.com/health | Health check |
 
 ---
 

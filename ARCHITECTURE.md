@@ -36,7 +36,7 @@ Browser → React App Loads → Shows Home Page
 ```
 User Fills Form
     ↓
-React sends POST to http://localhost:8001/register
+React sends POST to https://brainforge-tjls.onrender.com/register
     ↓
 FastAPI validates data
     ↓
@@ -53,7 +53,7 @@ React redirects to Login page
 ```
 User enters email + password
     ↓
-React sends POST to http://localhost:8001/login
+React sends POST to https://brainforge-tjls.onrender.com/login
     ↓
 FastAPI verifies password hash
     ↓
@@ -72,7 +72,7 @@ React checks if token exists
     ↓
 Token found → Allow access
     ↓
-React sends GET to http://localhost:8001/profile
+React sends GET to https://brainforge-tjls.onrender.com/profile
     (with token in Authorization header)
     ↓
 FastAPI verifies token signature
@@ -142,7 +142,7 @@ frontend/src/
 2. FRONTEND (React)
    ├─ Validates form (client-side)
    ├─ Calls: userAPI.register(formData)
-   └─ Sends POST request to: http://localhost:8001/register
+    └─ Sends POST request to: https://brainforge-tjls.onrender.com/register
 
 3. BACKEND (FastAPI)
    ├─ Receives request at /register endpoint
@@ -180,7 +180,7 @@ frontend/src/
 
 ```javascript
 // Example: Login request
-axios.post('http://localhost:8001/login', {
+axios.post('https://brainforge-tjls.onrender.com/login', {
   username: 'kakashi@konoha.com',
   password: 'copy_ninja'
 }, {
@@ -209,7 +209,7 @@ axios.post('http://localhost:8001/login', {
 
 ```javascript
 // React automatically adds token
-axios.get('http://localhost:8001/profile', {
+axios.get('https://brainforge-tjls.onrender.com/profile', {
   headers: {
     'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
   }
@@ -223,9 +223,9 @@ axios.get('http://localhost:8001/profile', {
 | Component | Port | Local URL | Purpose |
 |-----------|------|-----------|---------|
 | React Dev Server | 3000 | http://localhost:3000 | Web interface |
-| FastAPI Backend | 8001 | http://localhost:8001 | API endpoints |
-| Swagger Docs | 8001 | http://localhost:8001/docs | API testing |
-| ReDoc | 8001 | http://localhost:8001/redoc | API documentation |
+| FastAPI Backend | 8001 | https://brainforge-tjls.onrender.com | API endpoints |
+| Swagger Docs | 8001 | https://brainforge-tjls.onrender.com/docs | API testing |
+| ReDoc | 8001 | https://brainforge-tjls.onrender.com/redoc | API documentation |
 
 ---
 

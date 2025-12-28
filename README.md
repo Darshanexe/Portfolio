@@ -40,8 +40,8 @@ c:\My_CodeRoom\My_venv\Scripts\activate
 uvicorn services.user_service.user_main:app --reload --port 8001
 ```
 
-Backend will be running at: **http://localhost:8001**
-- API Docs (Swagger): http://localhost:8001/docs
+Backend will be running at: **https://brainforge-tjls.onrender.com**
+- API Docs (Swagger): https://brainforge-tjls.onrender.com/docs
 
 ### 2. Start the Frontend (React)
 
@@ -145,7 +145,7 @@ DATABASE_URL=sqlite:///./ecommerce_users.db
 
 **Frontend** (`frontend/.env`):
 ```env
-VITE_API_URL=http://localhost:8001
+VITE_API_URL=https://brainforge-tjls.onrender.com
 ```
 
 ## 🐛 Troubleshooting
