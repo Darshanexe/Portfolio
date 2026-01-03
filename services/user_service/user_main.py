@@ -4,10 +4,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from sqlalchemy import desc, func
-from . import models, database, auth
-from .database import get_db, User, UserStats, GameScore
+import models
+import database
+import auth
+from database import get_db, User, UserStats, GameScore
 from typing import List
-from .auth import create_access_token, get_current_user, ACCESS_TOKEN_EXPIRE_MINUTES
+from auth import create_access_token, get_current_user, ACCESS_TOKEN_EXPIRE_MINUTES
 
 # Initialize FastAPI app for User Service
 app = FastAPI(
@@ -19,7 +21,7 @@ app = FastAPI(
 # Enable CORS for frontend communication
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # React dev server
+    allow_origins=["http://localhost:3000", 'https://darshanexe.github.io'],  # React dev server, Production frontend
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

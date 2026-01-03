@@ -15,7 +15,7 @@ async def root():
         "message": "Welcome to the E-Commerce Platform API Gateway!",
         "documentation": "Visit /docs for API documentation.",
         "services": {
-            "user_service": "https://brainforge-tjls.onrender.com",
+            "user_service": "https://portfolio-fa88.onrender.com",
             "product_service": "https://brainforge-tjls.onrender.com",
             "order_service": "https://brainforge-tjls.onrender.com",
             "payment_service": "https://brainforge-tjls.onrender.com",
