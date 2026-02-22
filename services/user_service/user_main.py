@@ -18,10 +18,10 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Enable CORS for frontend communication
+# Enable CORS for all sources (frontend, API gateway, local dev)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", 'https://darshanexe.github.io'],  # React dev server, Production frontend
+    allow_origins=["*"],  # Allow all origins - auth is token-based
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

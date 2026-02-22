@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { authUtils } from '../utils/auth';
 
-// Base API URL
-const API_URL = import.meta.env.VITE_API_URL || 'https://brainforge-tjls.onrender.com';
+// Base API URL - use environment variable or default to API Gateway
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 // Create axios instance
 const api = axios.create({
