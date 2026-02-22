@@ -452,10 +452,10 @@ const WordLogic = () => {
             <div style={styles.questionCounter}>
               Question {currentQuestion + 1} / {questions.length}
             </div>
-            <div style={styles.timer} style={{
-              ...styles.timer,
-              color: timeLeft <= 5 ? theme.colors.neonRed : theme.colors.neonCyan,
-            }}>
+              <div style={{
+                ...styles.timer,
+                color: timeLeft <= 5 ? theme.colors.neonRed : theme.colors.neonCyan,
+              }}>
               ⏱️ {timeLeft}s
             </div>
             <div style={styles.scoreDisplay}>
