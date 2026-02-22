@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+import os
 import uvicorn
 
 app = FastAPI(
@@ -9,18 +11,29 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
+# Enable CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Get microservice URLs from environment variables (set in Render)
+USER_SERVICE_URL = os.getenv("USER_SERVICE_URL", "http://localhost:8001")
+PRODUCT_SERVICE_URL = os.getenv("PRODUCT_SERVICE_URL", "http://localhost:8002")
+
 @app.get("/")
 async def root():
     return {
-        "message": "Welcome to the E-Commerce Platform API Gateway!",
+        "message": "Welcome to E-Commerce Platform API Gateway!",
         "documentation": "Visit /docs for API documentation.",
         "services": {
-            "user_service": "https://portfolio-fa88.onrender.com",
-            "product_service": "https://brainforge-tjls.onrender.com",
-            "order_service": "https://brainforge-tjls.onrender.com",
-            "payment_service": "https://brainforge-tjls.onrender.com",
-            "notification_service": "https://brainforge-tjls.onrender.com"
-        }
+            "user_service": USER_SERVICE_URL,
+            "product_service": PRODUCT_SERVICE_URL,
+        },
+        "status": "running"
     }
     
 @app.get("/health")

@@ -4,12 +4,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from sqlalchemy import desc, func
-import models
-import database
-import auth
-from database import get_db, User, UserStats, GameScore
+from . import models
+from . import database
+from . import auth
+from .database import get_db, User, UserStats, GameScore
 from typing import List
-from auth import create_access_token, get_current_user, ACCESS_TOKEN_EXPIRE_MINUTES
+from .auth import create_access_token, get_current_user, ACCESS_TOKEN_EXPIRE_MINUTES
 
 # Initialize FastAPI app for User Service
 app = FastAPI(
