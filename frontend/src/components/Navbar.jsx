@@ -38,8 +38,8 @@ const Navbar = () => {
           console.log('Token validation failed, logging out');
           authUtils.removeToken();
           setUser(null);
-          if (location.pathname !== '/' && location.pathname !== '/login' && location.pathname !== '/register') {
-            navigate('/');
+          if (location.pathname !== '/Portfolio/' && location.pathname !== '/login' && location.pathname !== '/register') {
+            navigate('/Portfolio/');
           }
         });
     } else {
@@ -61,7 +61,7 @@ const Navbar = () => {
   const handleLogout = () => {
     authUtils.removeToken();
     setUser(null);
-    navigate('/');
+    navigate('/Portfolio/');
   };
 
   // Check if a link is active (current page)
@@ -81,7 +81,7 @@ const Navbar = () => {
       <div style={styles.navLinks}>
         {isLoggedIn && (
           <>
-            <NavLink to="/" isActive={isActive('/')}>
+            <NavLink to="/Portfolio/" isActive={isActive('/Portfolio/')}> 
               Home
             </NavLink>
             <NavLink to="/games" isActive={isActive('/games')}>
@@ -133,7 +133,7 @@ const Navbar = () => {
         <div style={styles.mobileMenu}>
           {isLoggedIn && (
             <>
-              <Link to="/" style={styles.mobileLink} onClick={() => setIsMenuOpen(false)}>
+              <Link to="/Portfolio/" style={styles.mobileLink} onClick={() => setIsMenuOpen(false)}>
                 🏠 Home
               </Link>
               <Link to="/games" style={styles.mobileLink} onClick={() => setIsMenuOpen(false)}>
