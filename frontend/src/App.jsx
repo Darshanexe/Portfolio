@@ -26,7 +26,7 @@ import TowerOfHanoi from './pages/games/TowerOfHanoi';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/Portfolio">
       <div style={styles.app}>
         <Navbar />
         <main style={styles.main}>
