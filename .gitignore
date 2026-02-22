@@ -10,6 +10,7 @@ ENV/
 My_venv/
 
 # Environment Variables (IMPORTANT!)
+.env.example
 
 # Database
 *.db
