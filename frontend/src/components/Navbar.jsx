@@ -70,7 +70,7 @@ const Navbar = () => {
   return (
     <nav style={styles.navbar}>
       {/* Logo Section */}
-      <Link to="/" style={styles.logoContainer}>
+      <Link to="/Portfolio/" style={styles.logoContainer}>
         <span style={styles.logoIcon}>🧠</span>
         <span style={styles.logoText}>
           Brain<span style={styles.logoAccent}>Forge</span>
