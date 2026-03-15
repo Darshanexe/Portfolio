@@ -3,7 +3,23 @@ import { authUtils } from '../utils/auth';
 
 // Base API URL - use environment variable or default to API Gateway
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-console.log('🔗 API URL:', API_URL, '| Environment:', import.meta.env.NODE_ENV);
+console.log('🔗 API URL:', API_URL, '| Production:', import.meta.env.PROD);
+
+// Simple request cache to prevent 429 errors
+const requestCache = new Map();
+const CACHE_DURATION = 30000; // 30 seconds
+
+function getCachedData(url) {
+  const cached = requestCache.get(url);
+  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+    return cached.data;
+  }
+  return null;
+}
+
+function setCachedData(url, data) {
+  requestCache.set(url, { data, timestamp: Date.now() });
+}
 
 // Create axios instance
 const api = axios.create({
@@ -27,7 +43,7 @@ api.interceptors.request.use(
   }
 );
 
-// Handle 401 errors (unauthorized)
+// Handle 401 errors (unauthorized) and 429 rate-limit errors
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -42,6 +58,14 @@ api.interceptors.response.use(
       if (!publicPages.includes(currentPath)) {
         window.location.href = '/';
       }
+    } else if (error.response?.status === 429) {
+      // Rate-limited - retry after 2 seconds
+      console.warn('⚠️ Rate limited (429). Retrying...');
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(api.request(error.config));
+        }, 2000);
+      });
     }
     return Promise.reject(error);
   }
@@ -103,7 +127,11 @@ export const userAPI = {
 
   // Get user stats
   getStats: async () => {
+    const cached = getCachedData('/stats');
+    if (cached) return cached;
+    
     const response = await api.get('/stats');
+    setCachedData('/stats', response.data);
     return response.data;
   },
 
@@ -131,13 +159,21 @@ export const userAPI = {
 
   // Get leaderboard
   getLeaderboard: async (limit = 10) => {
+    const cached = getCachedData(`/leaderboard?limit=${limit}`);
+    if (cached) return cached;
+    
     const response = await api.get(`/leaderboard?limit=${limit}`);
+    setCachedData(`/leaderboard?limit=${limit}`, response.data);
     return response.data;
   },
 
   // Get platform stats (public, no auth required)
   getPlatformStats: async () => {
+    const cached = getCachedData('/platform/stats');
+    if (cached) return cached;
+    
     const response = await api.get('/platform/stats');
+    setCachedData('/platform/stats', response.data);
     return response.data;
   },
 };
