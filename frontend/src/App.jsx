@@ -8,8 +8,11 @@
  */
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
+import { authUtils } from './utils/auth';
+import { userAPI } from './services/api';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -25,9 +28,38 @@ import TaskSwitching from './pages/games/TaskSwitching';
 import TowerOfHanoi from './pages/games/TowerOfHanoi';
 
 function App() {
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Validate token on app startup
+  useEffect(() => {
+    const validateToken = async () => {
+      const token = authUtils.getToken();
+      if (token) {
+        try {
+          // Try to fetch profile with current token
+          await userAPI.getProfile();
+          // Token is valid, continue
+        } catch (error) {
+          // Token is invalid or expired, clear it
+          console.log('Token expired or invalid, clearing session');
+          authUtils.removeToken();
+        }
+      }
+      setIsInitialized(true);
+    };
+
+    validateToken();
+  }, []);
+
   // Use '/Portfolio' as basename in production (GitHub Pages), '/' in development (localhost)
   const isProd = import.meta.env.MODE === 'production';
   const basename = isProd ? '/Portfolio' : '/';
+
+  // Show nothing until token validation is complete
+  if (!isInitialized) {
+    return null;
+  }
+
   return (
     <Router basename={basename}>
       <div style={styles.app}>

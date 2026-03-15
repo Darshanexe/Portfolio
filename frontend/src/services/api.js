@@ -5,8 +5,9 @@ import { authUtils } from '../utils/auth';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 console.log('🔗 API URL:', API_URL, '| Production:', import.meta.env.PROD);
 
-// Simple request cache to prevent 429 errors
+// Request cache to prevent 429 errors
 const requestCache = new Map();
+const pendingRequests = new Map(); // Track in-flight requests
 const CACHE_DURATION = 30000; // 30 seconds
 
 function getCachedData(url) {
@@ -19,6 +20,18 @@ function getCachedData(url) {
 
 function setCachedData(url, data) {
   requestCache.set(url, { data, timestamp: Date.now() });
+}
+
+// Prevent duplicate in-flight requests
+function getPendingRequest(url) {
+  return pendingRequests.get(url);
+}
+
+function setPendingRequest(url, promise) {
+  pendingRequests.set(url, promise);
+  promise.finally(() => {
+    pendingRequests.delete(url);
+  });
 }
 
 // Create axios instance
@@ -99,7 +112,7 @@ export const userAPI = {
     return response.data;
   },
 
-  // Get current user profile
+  // Get profile (validate token)
   getProfile: async () => {
     const response = await api.get('/profile');
     return response.data;
@@ -130,12 +143,22 @@ export const userAPI = {
 
   // Get user stats
   getStats: async () => {
+    // Check cache first
     const cached = getCachedData('/stats');
     if (cached) return cached;
     
-    const response = await api.get('/stats');
-    setCachedData('/stats', response.data);
-    return response.data;
+    // Check if request is already in flight
+    const pending = getPendingRequest('/stats');
+    if (pending) return pending;
+    
+    // Make new request
+    const promise = api.get('/stats').then(response => {
+      setCachedData('/stats', response.data);
+      return response.data;
+    });
+    
+    setPendingRequest('/stats', promise);
+    return promise;
   },
 
   // Submit game score
@@ -162,22 +185,46 @@ export const userAPI = {
 
   // Get leaderboard
   getLeaderboard: async (limit = 10) => {
-    const cached = getCachedData(`/leaderboard?limit=${limit}`);
+    const url = `/leaderboard?limit=${limit}`;
+    
+    // Check cache first
+    const cached = getCachedData(url);
     if (cached) return cached;
     
-    const response = await api.get(`/leaderboard?limit=${limit}`);
-    setCachedData(`/leaderboard?limit=${limit}`, response.data);
-    return response.data;
+    // Check if request is already in flight
+    const pending = getPendingRequest(url);
+    if (pending) return pending;
+    
+    // Make new request
+    const promise = api.get(url).then(response => {
+      setCachedData(url, response.data);
+      return response.data;
+    });
+    
+    setPendingRequest(url, promise);
+    return promise;
   },
 
   // Get platform stats (public, no auth required)
   getPlatformStats: async () => {
-    const cached = getCachedData('/platform/stats');
+    const url = '/platform/stats';
+    
+    // Check cache first
+    const cached = getCachedData(url);
     if (cached) return cached;
     
-    const response = await api.get('/platform/stats');
-    setCachedData('/platform/stats', response.data);
-    return response.data;
+    // Check if request is already in flight
+    const pending = getPendingRequest(url);
+    if (pending) return pending;
+    
+    // Make new request
+    const promise = api.get(url).then(response => {
+      setCachedData(url, response.data);
+      return response.data;
+    });
+    
+    setPendingRequest(url, promise);
+    return promise;
   },
 };
 
