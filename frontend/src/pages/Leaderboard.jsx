@@ -115,12 +115,12 @@ const Leaderboard = () => {
                 </div>
                 <div style={styles.dataCell}>
                   <span style={styles.mindRating}>
-                    🧠 {entry.mind_rating.toLocaleString()}
+                    🧠 {typeof entry.mind_rating === 'number' && !isNaN(entry.mind_rating) ? entry.mind_rating.toLocaleString() : '0'}
                   </span>
                 </div>
                 <div style={styles.dataCell}>
                   <span style={styles.sparks}>
-                    ⚡ {entry.sparks.toLocaleString()}
+                    ⚡ {typeof entry.sparks === 'number' && !isNaN(entry.sparks) ? entry.sparks.toLocaleString() : '0'}
                   </span>
                 </div>
               </div>

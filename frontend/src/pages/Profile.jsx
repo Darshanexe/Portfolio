@@ -164,7 +164,7 @@ const Profile = () => {
         />
         <StatCard 
           icon="🧠" 
-          value={stats.mind_rating.toLocaleString()} 
+          value={typeof stats.mind_rating === 'number' && !isNaN(stats.mind_rating) ? stats.mind_rating.toLocaleString() : '0'} 
           label="Mind Rating" 
           color={theme.colors.neonPurple}
         />

@@ -184,7 +184,11 @@ const Home = () => {
               <>
                 <div style={styles.statItem}>
                   <span style={styles.statIcon}>⚡</span>
-                  <span style={styles.statValue}>{userStats.sparks.toLocaleString()}</span>
+                  <span style={styles.statValue}>{
+                    typeof userStats.sparks === 'number' && !isNaN(userStats.sparks)
+                      ? userStats.sparks.toLocaleString()
+                      : '0'
+                  }</span>
                   <span style={styles.statLabel}>Your Sparks</span>
                 </div>
                 <div style={styles.statItem}>
@@ -277,7 +281,11 @@ const Home = () => {
             {/* User Stats Cards */}
             <div style={styles.dashboardCard}>
               <div style={styles.dashCardIcon}>⚡</div>
-              <div style={styles.dashCardValue}>{userStats.sparks.toLocaleString()}</div>
+              <div style={styles.dashCardValue}>{
+                typeof userStats.sparks === 'number' && !isNaN(userStats.sparks)
+                  ? userStats.sparks.toLocaleString()
+                  : '0'
+              }</div>
               <div style={styles.dashCardLabel}>Sparks Earned</div>
             </div>
             
