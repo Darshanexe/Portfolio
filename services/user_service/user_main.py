@@ -96,14 +96,21 @@ async def login_user(
     
     # Find user by email (using username field from form)
     db_user = db.query(User).filter(User.email == form_data.username).first()
-    
+    # Debug logging
+    print(f"Login attempt for: {form_data.username}")
+    if not db_user:
+        print("No user found with that email.")
+    else:
+        print(f"User found: {db_user.email}, verifying password...")
     # Verify user exists and password is correct
     if not db_user or not verify_password(form_data.password, db_user.hashed_password):
+        print("Invalid credentials!")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
+    print("Login successful!")
     
     # Create access token
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)

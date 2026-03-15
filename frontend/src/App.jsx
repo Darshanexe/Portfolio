@@ -25,8 +25,11 @@ import TaskSwitching from './pages/games/TaskSwitching';
 import TowerOfHanoi from './pages/games/TowerOfHanoi';
 
 function App() {
+  // Use '/Portfolio' as basename in production (GitHub Pages), '/' in development (localhost)
+  const isProd = import.meta.env.MODE === 'production';
+  const basename = isProd ? '/Portfolio' : '/';
   return (
-    <Router basename="/Portfolio">
+    <Router basename={basename}>
       <div style={styles.app}>
         <Navbar />
         <main style={styles.main}>

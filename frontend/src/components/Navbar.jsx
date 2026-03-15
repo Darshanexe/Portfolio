@@ -24,7 +24,11 @@ const Navbar = () => {
   const location = useLocation(); // Gets current URL path
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
-  
+
+  // Dynamic home path based on environment
+  const isProd = import.meta.env.MODE === 'production';
+  const homePath = isProd ? '/Portfolio' : '/';
+
   // Check if user is logged in
   const isLoggedIn = authUtils.isAuthenticated();
 
@@ -61,7 +65,7 @@ const Navbar = () => {
   const handleLogout = () => {
     authUtils.removeToken();
     setUser(null);
-    navigate('/Portfolio/');
+    navigate('/');
   };
 
   // Check if a link is active (current page)
@@ -70,7 +74,7 @@ const Navbar = () => {
   return (
     <nav style={styles.navbar}>
       {/* Logo Section */}
-      <Link to="/Portfolio/" style={styles.logoContainer}>
+      <Link to={homePath} style={styles.logoContainer}>
         <span style={styles.logoIcon}>🧠</span>
         <span style={styles.logoText}>
           Brain<span style={styles.logoAccent}>Forge</span>
@@ -81,7 +85,7 @@ const Navbar = () => {
       <div style={styles.navLinks}>
         {isLoggedIn && (
           <>
-            <NavLink to="/Portfolio/" isActive={isActive('/Portfolio/')}> 
+            <NavLink to={homePath} isActive={isActive(homePath)}>
               Home
             </NavLink>
             <NavLink to="/games" isActive={isActive('/games')}>
@@ -133,7 +137,7 @@ const Navbar = () => {
         <div style={styles.mobileMenu}>
           {isLoggedIn && (
             <>
-              <Link to="/Portfolio/" style={styles.mobileLink} onClick={() => setIsMenuOpen(false)}>
+              <Link to={homePath} style={styles.mobileLink} onClick={() => setIsMenuOpen(false)}>
                 🏠 Home
               </Link>
               <Link to="/games" style={styles.mobileLink} onClick={() => setIsMenuOpen(false)}>

@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
 import os
 import uvicorn 
@@ -54,7 +54,11 @@ async def health_check():
 async def proxy_register(request: Request):
     async with httpx.AsyncClient() as client:
         response = await client.post(f"{USER_SERVICE_URL}/register", json=await request.json())
-        return response.json()
+        return Response(
+            content=response.content,
+            status_code=response.status_code,
+            headers=dict(response.headers)
+        )
 
 # Proxy /login
 @app.api_route("/login", methods=["POST"])
@@ -62,7 +66,11 @@ async def proxy_login(request: Request):
     form_data = await request.form()
     async with httpx.AsyncClient() as client:
         response = await client.post(f"{USER_SERVICE_URL}/login", data=form_data)
-        return response.json()
+        return Response(
+            content=response.content,
+            status_code=response.status_code,
+            headers=dict(response.headers)
+        )
 
 # Proxy /users
 @app.api_route("/users", methods=["GET"])
@@ -85,7 +93,11 @@ async def proxy_profile(request: Request):
             response = await client.put(f"{USER_SERVICE_URL}/profile", data=await request.body(), headers=headers)
         else:  # DELETE
             response = await client.delete(f"{USER_SERVICE_URL}/profile", headers=headers)
-        return response.json()
+        return Response(
+            content=response.content,
+            status_code=response.status_code,
+            headers=dict(response.headers)
+        )
 
 # Proxy /stats
 @app.api_route("/stats", methods=["GET"])
@@ -137,4 +149,4 @@ async def proxy_leaderboard(request: Request):
         return response.json()
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
