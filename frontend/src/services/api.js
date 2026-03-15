@@ -51,12 +51,15 @@ api.interceptors.response.use(
       // Remove invalid token
       authUtils.removeToken();
       
-      // Redirect to home page (landing page) for re-login
-      const publicPages = ['/', '/login', '/register'];
+      // Only redirect if NOT already on a public page
+      // On login/register, we don't want to redirect (let the error display)
       const currentPath = window.location.pathname;
+      const baseUrl = import.meta.env.BASE_URL || '/';
+      const publicPaths = [baseUrl, `${baseUrl}login`, `${baseUrl}register`];
       
-      if (!publicPages.includes(currentPath)) {
-        window.location.href = '/';
+      if (!publicPaths.some(path => currentPath === path || currentPath === path.replace(/\/$/, ''))) {
+        // Redirect to home with proper base URL
+        window.location.href = baseUrl;
       }
     } else if (error.response?.status === 429) {
       // Rate-limited - retry after 2 seconds
