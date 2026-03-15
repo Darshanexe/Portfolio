@@ -25,9 +25,8 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
 
-  // Dynamic home path based on environment
-  const isProd = import.meta.env.MODE === 'production';
-  const homePath = isProd ? '/Portfolio' : '/';
+  // Home path is always '/' - React Router's basename handles the /Portfolio prefix
+  const homePath = '/';
 
   // Check if user is logged in
   const isLoggedIn = authUtils.isAuthenticated();
@@ -42,8 +41,8 @@ const Navbar = () => {
           console.log('Token validation failed, logging out');
           authUtils.removeToken();
           setUser(null);
-          if (location.pathname !== '/Portfolio/' && location.pathname !== '/login' && location.pathname !== '/register') {
-            navigate('/Portfolio/');
+          if (location.pathname !== '/' && location.pathname !== '/login' && location.pathname !== '/register') {
+            navigate('/');
           }
         });
     } else {
